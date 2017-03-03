@@ -1,0 +1,70 @@
+<!--
+  Generated template for the Register page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-toolbar>
+        <ion-title><i class="fa fa-user-plus" aria-hidden="true"></i> register</ion-title>
+
+        <ion-buttons start>
+            <button ion-button clear (click)="closeRegesterPage()">
+                <ion-icon name="md-close"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+
+</ion-header>
+
+<ion-content padding>
+    <ion-list>
+
+
+        <ion-item>
+            <ion-label floating>Full name</ion-label>
+            <ion-input [(ngModel)]="user" type="text"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>Email</ion-label>
+            <ion-input [(ngModel)]="email" type="text"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>Phone</ion-label>
+            <ion-input [(ngModel)]="telSet" type="text"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>Date of Birth</ion-label>
+            <ion-datetime [(ngModel)]="birthSet" displayFormat="MMM DD YYYY" pickerFormat="MMM DD YYYY"></ion-datetime>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>Сity</ion-label>
+            <ion-input [(ngModel)]="townSet" type="text"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>Work</ion-label>
+            <ion-input [(ngModel)]="workSet" type="text"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>University</ion-label>
+            <ion-input [(ngModel)]="stadySet" type="text"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>Password (at least 6 characters)</ion-label>
+            <ion-input [(ngModel)]="password" type="password"></ion-input>
+        </ion-item>
+
+    </ion-list>
+
+    <div padding>
+        <p><button ion-button block (click)="signUserUp()">Register</button></p>
+    </div>
+</ion-content>
