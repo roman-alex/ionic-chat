@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, ViewController, LoadingController, AlertController } from 'ionic-angular';
-import { UsersService } from '../../providers/users-service';
 import { TabsPage } from '../tabs/tabs';
+import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
 
 /*
   Generated class for the Register page.
@@ -11,52 +11,74 @@ import { TabsPage } from '../tabs/tabs';
 */
 @Component({
   selector: 'page-register',
-  templateUrl: 'register.html',
-  providers: [ UsersService ]
+  templateUrl: 'register.html'
 })
 export class RegisterPage {
 
-    user: string;
-    email: string;
-    telSet: string;
-    birthSet: string;
-    townSet: string;
-    workSet: string;
-    stadySet: string;
-    password: string;
+    person: FirebaseObjectObservable<any>;
+    defaultImg: string = 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg' ;
+    userEmail: string;
+    userPassword: string;
+    userUser: string;
+    userTelSet: string;
+    userBirthSet: string;
+    userTownSet: string;
+    userWorkSet: string;
+    userStadySet: string;
+    valid: boolean = false;
 
     constructor(
         public navCtrl: NavController,
         public viewCtrl: ViewController,
-        private usersService: UsersService,
         public loadingCtrl: LoadingController,
-        private alertCtrl: AlertController ) {}
+        private alertCtrl: AlertController,
+        public af: AngularFire ) {
+            this.af.auth.subscribe(user => {
+              if(user) {
+                this.person = this.af.database.object(`/people/${user.auth.uid}`);
+              }
+            });
+        }
 
     closeRegesterPage() {
         this.viewCtrl.dismiss();
     }
 
-    signUserUp() {
-        if (this.email && this.password && this.user && this.telSet && this.birthSet && this.townSet && this.workSet && this.stadySet) {
-
+    createUser() {
+        if ( this.userEmail && this.userPassword && this.userUser && this.userTelSet && this.userBirthSet && this.userTownSet && this.userWorkSet && this.userStadySet) {
             let loader = this.loadingCtrl.create({ dismissOnPageChange: true });
             loader.present();
 
-            this.usersService.signUpUser(this.email, this.password, this.user, this.telSet, this.birthSet, this.townSet, this.workSet, this.stadySet)
-                .then( authData => {
-                    this.viewCtrl.dismiss();
-                    this.navCtrl.setRoot(TabsPage);
-                }, error => {
-                    loader.dismiss();
-                    let alert = this.alertCtrl.create({
-                      title: 'Notification',
-                      message: error.message,
-                      buttons: ['Ok']
-                    });
-                    alert.present();
-            });
+            this.af.auth.createUser({
+                email: this.userEmail,
+                password: this.userPassword
+            }).then( authData => {
+                this.person.update({
+                    img: this.defaultImg,
+                    user: this.userUser,
+                    telSet: this.userTelSet,
+                    emailSet: this.userEmail,
+                    birthSet: this.userBirthSet,
+                    townSet: this.userTownSet,
+                    workSet: this.userWorkSet,
+                    stadySet: this.userStadySet,
+                    providerId: 'password'
+                });
+                this.viewCtrl.dismiss();
+                loader.dismiss();
+                this.navCtrl.setRoot(TabsPage);
+            }, error => {
+                loader.dismiss();
+                let alert = this.alertCtrl.create({
+                  title: 'Notification',
+                  message: error.message,
+                  buttons: ['Ok']
+                });
+                alert.present();
+        });
 
         } else {
+            console.log(this.userEmail)
 
             let alert = this.alertCtrl.create({
               title: 'Notification',

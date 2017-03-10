@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController,  ModalController, LoadingController, AlertController } from 'ionic-angular';
-import { UsersService } from '../../providers/users-service';
+import { NavController, ViewController,  ModalController, LoadingController, AlertController } from 'ionic-angular';
+import { AngularFire, AuthProviders, AuthMethods } from 'angularfire2';
 import { RegisterPage } from '../register/register';
 import { TabsPage } from '../tabs/tabs';
 
@@ -12,8 +12,7 @@ import { TabsPage } from '../tabs/tabs';
 */
 @Component({
   selector: 'page-login',
-  templateUrl: 'login.html',
-  providers: [ UsersService ]
+  templateUrl: 'login.html'
 })
 export class LoginPage {
 
@@ -22,10 +21,11 @@ export class LoginPage {
 
     constructor(
         public navCtrl: NavController,
+        public viewCtrl: ViewController,
         private modalCtrl: ModalController,
         public loadingCtrl: LoadingController,
-        private usersService: UsersService,
-        private alertCtrl: AlertController ) {}
+        private alertCtrl: AlertController,
+        public af: AngularFire ) {}
 
     submitLogin() {
       if (this.email && this.password) {
@@ -33,17 +33,23 @@ export class LoginPage {
           let loader = this.loadingCtrl.create({ dismissOnPageChange: true });
           loader.present();
 
-          this.usersService.signInUser(this.email, this.password)
-              .then( authData => {
-                  this.navCtrl.setRoot(TabsPage);
-              }, error => {
-                  loader.dismiss();
-                  let alert = this.alertCtrl.create({
-                    title: 'Notification',
-                    message: error.message,
-                    buttons: ['Ok']
-                  });
-                  alert.present();
+          this.af.auth.login({
+              email: this.email,
+              password: this.password
+          },
+          {
+              provider: AuthProviders.Password,
+              method: AuthMethods.Password
+          }).then( authData => {
+              this.navCtrl.setRoot(TabsPage);
+          }, error => {
+              loader.dismiss();
+              let alert = this.alertCtrl.create({
+                title: 'Notification',
+                message: error.message,
+                buttons: ['Ok']
+              });
+              alert.present();
           });
 
       } else {

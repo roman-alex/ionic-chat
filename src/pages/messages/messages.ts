@@ -2,20 +2,19 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AngularFire } from 'angularfire2';
 import { Observable } from 'rxjs';
-import { PersonPage } from '../person/person';
 import { PrivatPage } from '../privat/privat';
 
 /*
-  Generated class for the People page.
+  Generated class for the Messages page.
 
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
 @Component({
-  selector: 'page-people',
-  templateUrl: 'people.html'
+  selector: 'page-messages',
+  templateUrl: 'messages.html'
 })
-export class PeoplePage {
+export class MessagesPage {
 
     people: Observable<any>;
 
@@ -23,18 +22,16 @@ export class PeoplePage {
 
     ngOnInit() {
         this.af.auth.subscribe(user => {
-            if(user) {
-                this.people = this.af.database.list(`/people`).map(items => {
-                    const filtered = items.filter(item => item.$key != user.auth.uid);
-                    return filtered;
-                });
-            }
-        });
-    }
-
-    routPerson(id) {
-        this.navCtrl.push(PersonPage, {
-            id: id
+          if(user) {
+            this.people = this.af.database.list(`/people/${user.auth.uid}/privatChats/`, {
+              query: {
+                orderByChild: 'date'
+              }
+            }).map(items => {
+                const filtered = items.filter(item => item.date != undefined);
+                return filtered;
+            });
+          }
         });
     }
     massagePerson(id) {

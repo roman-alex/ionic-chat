@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
-import * as firebase from 'firebase';
+import { AngularFire } from 'angularfire2';
 
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
@@ -11,20 +11,13 @@ import { LoginPage } from '../pages/login/login';
 })
 export class MyApp {
 
-    public rootPage: any = TabsPage;
+    public rootPage: any;
 
-    constructor(platform: Platform) {
-        var config = {
-            apiKey: "AIzaSyAZ-DXzGDQsemHEzEadlnXaUDSGpu0Set0",
-            authDomain: "testchat-483ef.firebaseapp.com",
-            databaseURL: "https://testchat-483ef.firebaseio.com",
-            storageBucket: "testchat-483ef.appspot.com",
-            messagingSenderId: "58755040264"
-        };
-        firebase.initializeApp(config);
-
-        firebase.auth().onAuthStateChanged( user => {
-            if(!user) {
+    constructor(platform: Platform, public af: AngularFire) {
+        this.af.auth.subscribe(user => {
+            if(user) {
+                this.rootPage = TabsPage;
+            } else {
                 this.rootPage = LoginPage;
             }
         });
