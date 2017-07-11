@@ -1,8 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { PersonPage } from '../pages/person/person';
 import { PrivatPage } from '../pages/privat/privat';
@@ -11,7 +9,9 @@ import { PeoplePage } from '../pages/people/people';
 import { MessagesPage } from '../pages/messages/messages';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
+import { SettingPage } from '../pages/setting/setting';
 import { AngularFireModule } from 'angularfire2';
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyAZ-DXzGDQsemHEzEadlnXaUDSGpu0Set0",
@@ -21,11 +21,15 @@ export const firebaseConfig = {
     messagingSenderId: "58755040264"
 };
 
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': 'd4149dfb'
+  }
+};
+
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
-    ContactPage,
     HomePage,
     PeoplePage,
     PersonPage,
@@ -33,17 +37,17 @@ export const firebaseConfig = {
     RegisterPage,
     TabsPage,
     MessagesPage,
-    PrivatPage
+    PrivatPage,
+    SettingPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
+    CloudModule.forRoot(cloudSettings),
     AngularFireModule.initializeApp(firebaseConfig)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
-    ContactPage,
     HomePage,
     PeoplePage,
     PersonPage,
@@ -51,7 +55,8 @@ export const firebaseConfig = {
     RegisterPage,
     TabsPage,
     MessagesPage,
-    PrivatPage
+    PrivatPage,
+    SettingPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

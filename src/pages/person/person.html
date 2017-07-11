@@ -4,7 +4,7 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content padding >
+<ion-content>
     <div *ngIf="(person | async)">
         <ion-card text-center>
             <img *ngIf="(person | async)?.img" [src]="(person | async)?.img"  style="border-radius: 50%;  margin: 20px auto 0; width: 250px;  height: 250px;"/>

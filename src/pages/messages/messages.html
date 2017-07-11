@@ -12,14 +12,17 @@
 
 </ion-header>
 
-<ion-content padding>
+<ion-content>
     <ion-list>
       <ion-item [class.active]="!(person?.info.read)" (click)="massagePerson(person?.$key)"  *ngFor="let person of people | async">
         <ion-avatar item-left>
           <img [src]="person?.info.img">
         </ion-avatar>
         <h2>{{ person?.info.user }}</h2>
-        <p>{{ person?.info.lastMessage }}</p>
+        <p>
+            <ion-icon *ngIf="!(person?.info.read)" color="primary" style="margin-right: 3px;" name="mail"></ion-icon>
+            {{ person?.info.lastMessage }}
+        </p>
       </ion-item>
     </ion-list>
 </ion-content>

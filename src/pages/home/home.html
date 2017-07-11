@@ -9,7 +9,7 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content padding >
+<ion-content>
     <div *ngIf="(person | async)">
         <ion-card text-center>
             <img *ngIf="(person | async)?.img" [src]="(person | async)?.img"  style="border-radius: 50%;  margin: 20px auto 0; width: 250px;  height: 250px;"/>
@@ -43,7 +43,7 @@
             </ion-list>
         </ion-card>
         <div padding>
-            <button ion-button primary text-center block>Setting my profile</button>
+            <button ion-button primary text-center block (click)="settingUser()">Setting my profile</button>
         </div>
-    </div>    
+    </div>
 </ion-content>

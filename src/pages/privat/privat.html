@@ -7,24 +7,33 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>{{ itemChatInfo?.user }}</ion-title>
+    <ion-title>{{ itemChatInfoUser }}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
+<ion-content #content>
+    <!-- <ion-row *ngFor="let item of items | async">
+        <ion-col col-2>
+            <img [src]="item?.img" style="border-radius: 50%;">
+        </ion-col>
+        <ion-col col-10>
+            <h4 style="margin-bottom: 0; font-weight: 400;">{{ item?.user }}</h4>
+            <p style="margin-top: 0; margin-bottom: .5em;" [innerHTML]="item?.text"></p>
+            <p style="margin-top: 0;color: #4C555A; font-weight: 300; font-size: 1rem;">{{ item?.data | date:"HH:mm dd/MM/yy" }}</p>
+        </ion-col>
+    </ion-row> -->
 
-<ion-content padding>
-
-    <ion-list *ngIf="af.auth | async">
-        <ion-item *ngFor="let item of items | async">
-            <ion-avatar item-left>
-                <img [src]="item?.img">
-            </ion-avatar>
-            <h3>{{ item?.user }}</h3>
-            <p [innerHTML]="item?.text"></p>
-        </ion-item>
+    <ion-list>
+      <ion-item *ngFor="let item of items | async">
+        <ion-avatar item-left>
+          <img [src]="item?.img" style="border-radius: 50%;">
+        </ion-avatar>
+        <h2 style="margin-bottom: 0; font-weight: 400;">{{ item?.user }}</h2>
+        <p style="margin-top: 0; margin-bottom: .5em;" [innerHTML]="item?.text"></p>
+        <ion-note item-right="" class="note note-ios" style="color: #4C555A; font-weight: 300; font-size: .9rem;">{{ item?.data | date:"HH:mm dd/MM/yy" }}</ion-note>
+      </ion-item>
     </ion-list>
-
 </ion-content>
 
 <ion-footer>

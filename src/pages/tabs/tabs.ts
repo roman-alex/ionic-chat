@@ -26,13 +26,13 @@ export class TabsPage {
             // уведомления о сообщениях
             this.chatSubscribe = this.af.database.list(`/people/${user.auth.uid}/privatChats`, { preserveSnapshot: true });
             this.chatSubscribe.subscribe(snapshots => {
+                var count = 0;
                 snapshots.forEach(snapshot => {
-                    let count = 0;
                     if (snapshot.val().info.read == false ) {
                         ++count;
                     }
-                    this.countMessage = count;
                 });
+                this.countMessage = count;
             });
           }
         });
